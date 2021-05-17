@@ -9,30 +9,27 @@ namespace task02
 
         private static void Main()
         {
-            lock (X)
-            {
-                var thread = new Thread(DrawSymbolChain);
-                thread.Start();
-            }
+            var thread = new Thread(DrawSymbolChain);
+            thread.Start();
 
-            lock (X)
-            {
-                var thread2 = new Thread(DrawSymbolChain2);
-                thread2.Start();
-            }
+            var thread2 = new Thread(DrawSymbolChain2);
+            thread2.Start();
         }
 
         private static void DrawSymbolChain()
         {
             var r = new Random();
-            const string symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(symbols[r.Next(0, symbols.Length)]);
-            for (var i = 0; i < r.Next(1, 5); i++)
+            const string symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            lock (X)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(symbols[r.Next(0, symbols.Length)]);
+                for (var i = 0; i < r.Next(1, 5); i++)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(symbols[r.Next(0, symbols.Length)]);
+                }
             }
         }
 
@@ -40,13 +37,17 @@ namespace task02
         {
             var r = new Random();
             const string symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(symbols[r.Next(0, symbols.Length)]);
-            for (var i = 0; i < r.Next(1, 5); i++)
+            lock (X)
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(symbols[r.Next(0, symbols.Length)]);
+                for (var i = 0;
+                    i < r.Next(1, 5);
+                    i++)
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(symbols[r.Next(0, symbols.Length)]);
+                }
             }
         }
     }
